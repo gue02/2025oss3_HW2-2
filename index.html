@@ -107,6 +107,17 @@
     <script>
         $(document).ready(function() {
             let data = JSON.parse(localStorage.getItem("productData")) || [];
+             if (data.length === 0) {
+                data = [
+                    { number: 1, name: "The Legend of Zelda: Breath of the Wild", price: "59,800", date: "2017-03-03", memory: "14GB", genre: "Adventure" },
+                    { number: 2, name: "Elden Ring", price: "64,800", date: "2022-02-25", memory: "60GB", genre: "RPG" },
+                    { number: 3, name: "Minecraft", price: "30,000", date: "2011-11-18", memory: "1GB", genre: "Sandbox" },
+                    { number: 4, name: "Cyberpunk 2077", price: "69,800", date: "2020-12-10", memory: "70GB", genre: "Action RPG" },
+                    { number: 5, name: "Valorant", price: "Free", date: "2020-06-02", memory: "20GB", genre: "FPS" },
+                    { number: 6, name: "Pokémon Scarlet & Violet", price: "64,800", date: "2022-11-18", memory: "10GB", genre: "RPG" }
+                ];
+                localStorage.setItem("productData", JSON.stringify(data));
+            }
              $("#dataTable tbody").empty();
             $.each(data, function(index, item) {
                 $("#tableData").append(
@@ -124,3 +135,4 @@
     </script>
 </body>
 </html>
+
