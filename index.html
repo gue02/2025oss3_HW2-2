@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="my.css">
+    <style>
+        #Header{
+            display: flex;               
+            justify-content: space-between; 
+            align-items: center;    
+        }
+        #ListHeader {
+            display: flex;               
+            justify-content: space-between; 
+            align-items: center;         
+        }
+        #ListMain table{
+            width :100%;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id = "Header">
+        <h2 style = "display: inline-block;"> 게임 구매 목록</h2>
+    </div>
+    <div id = ListHeader>
+        <H3>List</H3>
+        <a href = "add.html"><input type = "submit" value= "추가" style = "float: right;"></a>
+    </div>
+    <div id = ListMain>
+        <table id ="tableData">
+            <colgroup>
+                <col style="width: 10%;">
+                <col style="width: 40%;">   
+                <col style="width: 10%;">   
+                <col style="width: 15%;">  
+                <col style="width: 10%;">
+                <col style="width: 20%;"> 
+            </colgroup>
+        <thead>
+            <tr>
+                <th>구매순</th>
+                <th>이름</th>
+                <th>가격</th>
+                <th>출시일</th>
+                <th>용량</th>
+                <th>장르</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    </div>
+    <script>
+        $(document).ready(function() {
+            let data = JSON.parse(localStorage.getItem("productData")) || [];
+             $("#dataTable tbody").empty();
+            $.each(data, function(index, item) {
+                $("#tableData").append(
+                `<tr>
+                    <td>${item.number}</td>
+                    <td><a href="view.html?no=${item.number}">${item.name}</a></td>
+                    <td>${item.price}</td>
+                    <td>${item.date}</td>
+                    <td>${item.memory}</td>
+                    <td>${item.genre}</td>
+                </tr>`
+                );
+            });
+            });
+    </script>
+</body>
+</html>

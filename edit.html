@@ -1,0 +1,111 @@
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>수정</title>
+  <link rel="stylesheet" href="my.css">
+  <style>
+    .card{
+        border:1px solid #ddd;
+        border-radius:10px;
+        padding:16px;
+        max-width:720px
+    }
+    .row{
+        display:flex;
+        gap:12px;
+        margin:8px 0;
+        align-items:center
+    }
+    .row label{
+        width:120px;
+        color:#666
+    }
+    input, textarea{
+        flex:1;
+        padding:8px;
+        border:1px solid white;
+        border-radius:8px
+    }
+    .btns{
+        display:flex;
+        gap:8px;
+        margin-top:16px
+    }
+    .btn{
+        padding:8px 12px;
+        border:1px solid white;
+        border-radius:8px;
+        background: white;
+        cursor:pointer
+    }
+    .btn.primary{
+        border-color:#2563eb;
+        color: white;
+        background:#2563eb}
+  </style>
+</head>
+<body>
+  <h2>수정</h2>
+  <div class="card">
+    <div class="row"><label>번호</label><input id="no" type="number" readonly></div>
+    <div class="row"><label>이름</label><input id="name" type="text"></div>
+    <div class="row"><label>가격</label><input id="price" type="text"></div>
+    <div class="row"><label>구매일</label><input id="date" type="date"></div>
+    <div class="row"><label>Memory</label><textarea id="memory"></textarea></div>
+    <div class="row"><label>장르</label><input id="genre" type="text"></div>
+
+    <div class="btns">
+      <button class="btn" onclick="goDetail()">취소</button>
+      <button class="btn primary" onclick="save()">저장</button>
+    </div>
+  </div>
+
+  <script>
+    const LS_KEY = "productData";
+    const p = new URLSearchParams(location.search);
+    const no = Number(p.get("no"));
+
+    let data = JSON.parse(localStorage.getItem(LS_KEY) || "[]");
+    let item = data.find(v => Number(v.number) === no);
+
+    if(!item){
+      alert("게시물을 찾을 수 없습니다.");
+      location.href = "index.html";
+    } else {
+      $("#no").value = item.number;
+      $("#name").value = item.name;
+      $("#price").value = item.price;
+      $("#date").value = item.date;
+      $("#memory").value = item.memory;
+      $("#genre").value = item.genre;
+    }
+
+    function save(){
+      const updated = {
+        number: Number($("#no").value),
+        name: $("#name").value.trim(),
+        price: $("#price").value.trim(),
+        date: $("#date").value,
+        memory: $("#memory").value.trim(),
+        genre: $("#genre").value.trim()
+      };
+      if(!updated.name || !updated.price){
+        alert("이름/가격은 필수입니다.");
+        return;
+      }
+      const idx = data.findIndex(v => Number(v.number) === no);
+      if(idx >= 0){
+        data[idx] = updated;
+        localStorage.setItem(LS_KEY, JSON.stringify(data));
+        alert("저장되었습니다.");
+        location.href = `detail.html?no=${updated.number}`;
+      } else {
+        alert("저장 실패: 항목을 찾을 수 없습니다.");
+      }
+    }
+    function goDetail(){ location.href = `detail.html?no=${no}`; }
+
+    function $(sel){ return document.querySelector(sel); }
+  </script>
+</body>
+</html>

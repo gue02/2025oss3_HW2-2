@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="my.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <style>
+        input, textarea{
+        flex:1;
+        padding:8px;
+        border-radius:8px
+    }
+    </style>
+</head>
+<body>
+    <H2> 게임 추가 </H2>
+    <form id = Addgame>
+        <label for = "nameInput">Name : </label>
+        <input type = "text" id = "nameInput" placeholder="Input Name"><br/>
+
+        <label for = "priceInput">Price : </label>
+        <input type = "number" id = "priceInput" placeholder="Input Price"><br/>
+
+        <label for = "dateInput">Date : </label>
+        <input type = "date" id = "dateInput"><br/>
+
+        <label for = "memoryInput">Memory : </label>
+        <input type = "text" id = "memoryInput" placeholder="Input Memory"><br/>
+
+        <label for = "genreInput">Genre : </label>
+        <input type = "text" id = "genreInput" placeholder="Input Genre"><br/>
+
+        <button type = "submit" id = submit>추가</button>
+    </form>
+    <button type = "cancel" id = cancel>취소</button>
+    <script>
+        $("#submit").click(function() {
+            let name = $("#nameInput").val();
+            let price = $("#priceInput").val();
+            let date = $("#dateInput").val();
+            let memory = $("#memoryInput").val();
+            let genre = $("#genreInput").val();
+
+            if(!name ){
+                alert("이름을 입력하세요!");
+                return;
+            }
+            
+            if(!price){
+                alert("가격을 입력하세요!");
+                return;
+            }
+
+            if(!date){
+                alert("구매일을 입력하세요!");
+                return;
+            }
+            if(!memory){
+                alert("용량을 입력하세요!");
+                return;
+            }
+            if(!genre){
+                alert("장르를 입력하세요!");
+                return;
+            }
+
+            let data = JSON.parse(localStorage.getItem("productData")) || [];
+
+            let number = data.length + 1;
+
+            data.push({ number, name, price, date, memory, genre });
+
+            localStorage.setItem("productData", JSON.stringify(data));
+
+            alert("저장 완료! index.html에서 확인하세요.");
+            location.href= 'index.html';
+        });
+        $("#cancel").click(function(){
+            location.href= 'index.html';
+        });
+    </script>
+</body>
+</html>

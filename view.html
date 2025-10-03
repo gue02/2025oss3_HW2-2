@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>상세 보기</title>
+  <link rel="stylesheet" href="my.css">
+  <style>
+    .card{
+        border:1px solid #ddd;
+        border-radius:10px;
+        padding:16px;
+        max-width:720px
+    }
+    .row{
+        display:flex;
+        gap:12px;
+        margin:8px 0
+    }
+    .label{
+        width:120px;
+        color:#666
+    }
+    .btn.primary{
+        border-color:#2563eb;
+        color:#fff;
+        background:#2563eb
+    }
+    .btn.danger{
+        border-color:#ef4444;
+        background:#ef4444;
+        color:#fff
+    }
+  </style>
+</head>
+<body>
+  <h2>상세 보기</h2>
+  <div class="card" id="detailBox">
+  </div>
+
+  <div class="btns">
+    <button class="btn" onclick="goList()">목록</button>
+    <button class="btn" onclick="goAdd()">추가</button>
+    <button class="btn primary" onclick="goEdit()">수정</button>
+    <button class="btn danger" onclick="del()">삭제</button>
+  </div>
+
+  <script>
+    const LS_KEY = "productData";
+    const params = new URLSearchParams(location.search);
+    const no = Number(params.get("no"));
+
+    let data = JSON.parse(localStorage.getItem(LS_KEY) || "[]");
+    let item = data.find(v => Number(v.number) === no);
+
+    const box = document.getElementById('detailBox');
+    if(!item){
+      box.innerHTML = `<p>해당 게시물을 찾을 수 없습니다.</p>`;
+    } else {
+      box.innerHTML = `
+        <div class="row"><div class="label">번호</div><div>${item.number}</div></div>
+        <div class="row"><div class="label">이름</div><div>${esc(item.name)}</div></div>
+        <div class="row"><div class="label">가격</div><div>${esc(item.price)}</div></div>
+        <div class="row"><div class="label">구매일</div><div>${esc(item.date)}</div></div>
+        <div class="row"><div class="label">Memory</div><div>${nl2br(esc(item.memory))}</div></div>
+        <div class="row"><div class="label">장르</div><div>${esc(item.genre)}</div></div>
+      `;
+    }
+
+    function goList(){ location.href = "index.html"; }
+    function goAdd(){ location.href = "add.html"; }
+    function goEdit(){
+      location.href = `edit.html?no=${no}`;
+    }
+    function del(){
+      if(!item){ alert("게시물이 없습니다."); return; }
+      if(confirm("게시물을 삭제할까요?")){
+        data = data.filter(v => Number(v.number) !== no);
+        localStorage.setItem(LS_KEY, JSON.stringify(data));
+        alert("삭제되었습니다.");
+        location.href = "index.html";
+      }
+    }
+
+    // utils
+    function esc(s){ return String(s).replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])); }
+    function nl2br(s){ return s.replace(/\n/g, "<br>"); }
+  </script>
+</body>
+</html>
